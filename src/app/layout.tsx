@@ -21,7 +21,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <Toaster />
+        <Toaster
+          toastOptions={{
+            style: {
+              textAlign: "center",
+            },
+          }}
+        />
       </body>
     </html>
   );
