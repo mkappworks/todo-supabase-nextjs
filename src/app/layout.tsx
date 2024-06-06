@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 
 import "./globals.css";
 
+import { Header } from "@/components/header/header";
 import { Providers } from "@/providers";
 
 import { cn } from "@/lib/utils";
@@ -32,6 +33,7 @@ export default function RootLayout({
         )}
       >
         <Providers>
+          <Header />
           {children}
           <Toaster />
         </Providers>
