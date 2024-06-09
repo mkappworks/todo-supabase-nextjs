@@ -13,6 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { User } from "@supabase/supabase-js";
+import { User2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { Button } from "../../components/ui/button";
@@ -40,13 +41,14 @@ export function UserButton({ user }: Props) {
           size="icon"
           className="overflow-hidden rounded-full"
         >
-          <Image
+          <User2 />
+          {/* <Image
             src="/placeholder-user.jpg"
             width={36}
             height={36}
             alt="Avatar"
             className="overflow-hidden rounded-full"
-          />
+          /> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
