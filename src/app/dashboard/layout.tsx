@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
-import { Header } from "./header";
-import { SideNav } from "./side-nav";
+import { Header } from "@/components/dashboard-header/header";
+import { SideNav } from "@/components/dashboard-header/side-nav";
 
 export const metadata: Metadata = {
   title: "TodoNow - Dashbaord",

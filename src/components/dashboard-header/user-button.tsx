@@ -16,7 +16,7 @@ import { User } from "@supabase/supabase-js";
 import { User2 } from "lucide-react";
 import toast from "react-hot-toast";
 
-import { Button } from "../../components/ui/button";
+import { Button } from "../ui/button";
 
 type Props = {
   user: User;
