@@ -12,10 +12,10 @@ export const createAccountAction = async (formData: FormData) => {
 
     if (error) throw error;
 
-    const { data, error: loginError } =
+    const { data, error: signInError } =
       await getSupabaseAuth().signInWithPassword({ email, password });
 
-    if (loginError) throw loginError;
+    if (signInError) throw signInError;
     if (!data.session) throw new Error("No session found");
 
     return { errorMessage: null };
