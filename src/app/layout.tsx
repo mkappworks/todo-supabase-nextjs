@@ -5,7 +5,6 @@ import { Toaster } from "react-hot-toast";
 
 import "./globals.css";
 
-import { Header } from "@/components/header/header";
 import { Providers } from "@/providers";
 
 import { cn } from "@/lib/utils";
@@ -19,6 +18,7 @@ const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -28,12 +28,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          "bg-background min-h-screen font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased",
           fontSans.variable,
         )}
       >
         <Providers>
-          <Header />
           {children}
           <Toaster />
         </Providers>
