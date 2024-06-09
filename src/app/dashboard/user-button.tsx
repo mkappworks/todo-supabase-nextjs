@@ -27,7 +27,7 @@ export function UserButton({ user }: Props) {
   const router = useRouter();
 
   const handleSignOut = async () => {
-    const toastId = toast.loading("Singing out...");
+    const toastId = toast.loading("Signing out...");
     await signOutAction();
     router.replace("/sign-in");
     toast.dismiss(toastId);
