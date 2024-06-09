@@ -19,7 +19,7 @@ export function SignInForm() {
     startTransition(async () => {
       const { errorMessage } = await signInAction(formData);
       if (!errorMessage) {
-        router.replace("/");
+        router.replace("/dashboard");
         toast.success("Successfully signed in");
       } else {
         toast.error(errorMessage);
