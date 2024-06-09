@@ -9,10 +9,19 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { LineChart, Package, Package2, Settings } from "lucide-react";
+import { Dock, LineChart, Package2, Settings } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 
 export function SideNav() {
   const pathName = usePathname();
+
+  const getSideNavLinkIconStyle = (path: string) => {
+    return cn(
+      "flex h-9 w-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8",
+      { "bg-accent": pathName.endsWith(path) },
+    );
+  };
 
   return (
     <TooltipProvider>
@@ -30,9 +39,9 @@ export function SideNav() {
             <TooltipTrigger asChild>
               <Link
                 href="/dashboard/todos"
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-accent text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={getSideNavLinkIconStyle("/todos")}
               >
-                <Package className="h-5 w-5" />
+                <Dock className="h-5 w-5" />
                 <span className="sr-only">Todos</span>
               </Link>
             </TooltipTrigger>
@@ -43,7 +52,7 @@ export function SideNav() {
             <TooltipTrigger asChild>
               <Link
                 href="/dashboard/analytics"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={getSideNavLinkIconStyle("/analytics")}
               >
                 <LineChart className="h-5 w-5" />
                 <span className="sr-only">Analytics</span>
@@ -57,7 +66,7 @@ export function SideNav() {
             <TooltipTrigger asChild>
               <Link
                 href="/dashboard/settings"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={getSideNavLinkIconStyle("/settings")}
               >
                 <Settings className="h-5 w-5" />
                 <span className="sr-only">Settings</span>

@@ -8,20 +8,12 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  ShoppingCart,
-} from "lucide-react";
+import { Search } from "lucide-react";
 
 import { getUser } from "@/lib/auth";
 
+import { HeaderSheet } from "./header-sheet";
 import UserButton from "./user-button";
 
 export async function Header() {
@@ -29,48 +21,7 @@ export async function Header() {
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button size="icon" variant="outline" className="sm:hidden">
-            <PanelLeft className="h-5 w-5" />
-            <span className="sr-only">Toggle Menu</span>
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="sm:max-w-xs">
-          <nav className="grid gap-6 text-lg font-medium">
-            <Link
-              href="#"
-              className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-            >
-              <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">TodoNow</span>
-            </Link>
-
-            <Link
-              href="/dashboard/todos"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <ShoppingCart className="h-5 w-5" />
-              Todos
-            </Link>
-            <Link
-              href="/dashboard/analytics"
-              className="flex items-center gap-4 px-2.5 text-foreground"
-            >
-              <Package className="h-5 w-5" />
-              Analytics
-            </Link>
-
-            <Link
-              href="/dashboard/settings"
-              className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
-            >
-              <LineChart className="h-5 w-5" />
-              Settings
-            </Link>
-          </nav>
-        </SheetContent>
-      </Sheet>
+      <HeaderSheet />
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
           <BreadcrumbItem>
