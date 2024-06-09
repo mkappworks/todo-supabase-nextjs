@@ -1,6 +1,5 @@
 import Link from "next/link";
 
-import UserButton from "@/components/header/user-button";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -22,6 +21,8 @@ import {
 } from "lucide-react";
 
 import { getUser } from "@/lib/auth";
+
+import UserButton from "./user-button";
 
 export async function Header() {
   const user = await getUser();
@@ -46,7 +47,7 @@ export async function Header() {
             </Link>
 
             <Link
-              href="/dashbaord/todos"
+              href="/dashboard/todos"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <ShoppingCart className="h-5 w-5" />
