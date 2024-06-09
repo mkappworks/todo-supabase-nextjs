@@ -42,13 +42,6 @@ export function UserButton({ user }: Props) {
           className="overflow-hidden rounded-full"
         >
           <User2 />
-          {/* <Image
-            src="/placeholder-user.jpg"
-            width={36}
-            height={36}
-            alt="Avatar"
-            className="overflow-hidden rounded-full"
-          /> */}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
