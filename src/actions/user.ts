@@ -34,7 +34,7 @@ export const signInAction = async (formData: FormData) => {
       password,
     });
 
-    if (!error) throw error;
+    if (error) throw error;
     if (!data.session) throw new Error("No session found");
 
     return { errorMessage: null };
