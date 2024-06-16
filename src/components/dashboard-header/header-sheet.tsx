@@ -9,7 +9,7 @@ import { Dock, LineChart, Package2, PanelLeft, Settings } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-export async function HeaderSheet() {
+export function HeaderSheet() {
   const pathName = usePathname();
 
   const getSideNavLinkIconStyle = (path: string) => {
