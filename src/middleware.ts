@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 
-const publicRoutes = ["/sign-in", "/create-account", "/"];
+const publicRoutes = ["/sign-in", "/create-account", "/logo.svg", "/"];
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
