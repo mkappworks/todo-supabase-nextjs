@@ -18,7 +18,7 @@ export function TodoCard({
 }: {
   id: string;
   title: string;
-  description: string;
+  description?: string | null;
 }) {
   return (
     <Card>

@@ -1,19 +1,14 @@
 import Image from "next/image";
 
+import { getTodosAction } from "@/actions/todos";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import { CreateTodoButton } from "./create-todo-button";
 import { TodoCard } from "./todo-card";
 
-export default function TodosPage() {
-  let todos = [
-    {
-      id: "1",
-      title: "Todo 1",
-      description: "This is the first todo",
-    },
-  ];
+export default async function TodosPage() {
+  let { data, errorMessage } = await getTodosAction();
 
   return (
     <div className="mx-10 my-4">
@@ -22,7 +17,21 @@ export default function TodosPage() {
         <CreateTodoButton />
       </div>
 
-      {!todos && (
+      {errorMessage && (
+        <div className="flex flex-col items-center justify-center gap-8 py-12">
+          <Image
+            src="/todo.svg"
+            width="200"
+            height="200"
+            alt="image of empty todo list"
+          />
+          <h2 className="text-2xl">
+            Error loading the todos. Please refresh your page!
+          </h2>
+        </div>
+      )}
+
+      {!data && (
         <div className="grid grid-cols-3 gap-8">
           {new Array(6).fill("").map((_, i) => (
             <Card
@@ -38,7 +47,7 @@ export default function TodosPage() {
         </div>
       )}
 
-      {todos && todos.length === 0 && (
+      {data && data.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-8 py-12">
           <Image
             src="/todo.svg"
@@ -51,12 +60,12 @@ export default function TodosPage() {
         </div>
       )}
 
-      {todos && todos.length > 0 && (
+      {data && data.length > 0 && (
         <div className="grid grid-cols-3 gap-8">
-          {todos?.map((todo) => (
+          {data?.map((todo) => (
             <TodoCard
               key={todo.id}
-              id={todo.id}
+              id={todo.id.toString()}
               title={todo.title}
               description={todo.description}
             />
