@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 
-function CreateAccountPage() {
+export default function CreateAccountPage() {
   const router = useRouter();
 
   const [isPending, startTransition] = useTransition();
@@ -79,5 +79,3 @@ function CreateAccountPage() {
     </main>
   );
 }
-
-export default CreateAccountPage;

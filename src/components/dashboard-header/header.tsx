@@ -14,7 +14,7 @@ import { Search } from "lucide-react";
 import { getUser } from "@/lib/auth";
 
 import { HeaderSheet } from "./header-sheet";
-import UserButton from "./user-button";
+import { UserButton } from "./user-button";
 
 export async function Header() {
   const user = await getUser();
