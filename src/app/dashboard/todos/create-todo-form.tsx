@@ -16,8 +16,14 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  title: z.string().min(1).max(50),
-  description: z.string().min(1).max(5000),
+  title: z
+    .string()
+    .min(1, "The title cannot be empty")
+    .max(50, "The title cannot be more than 50 characters long"),
+  description: z
+    .string()
+    .max(500, "The description cannot be more than 500 characters long")
+    .optional(),
 });
 
 export function CreateTodoForm({ onCreate }: { onCreate: () => void }) {
@@ -25,7 +31,6 @@ export function CreateTodoForm({ onCreate }: { onCreate: () => void }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      description: "",
     },
   });
 
