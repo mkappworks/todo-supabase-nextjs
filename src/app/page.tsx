@@ -25,7 +25,7 @@ export default function LandingPage() {
               src="/logo.svg"
               width="200"
               height="200"
-              alt="doc search"
+              alt="todo now"
               className="mx-auto mb-4 rounded-2xl"
             />
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-50 sm:text-6xl">
