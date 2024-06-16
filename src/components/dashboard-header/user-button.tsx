@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { signOutAction } from "@/actions/user";
+import { signOutAction } from "@/actions/users";
 import {
   DropdownMenu,
   DropdownMenuContent,
