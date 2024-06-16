@@ -1,5 +1,6 @@
 "use client";
 
+import { createTodoAction } from "@/actions/todos";
 import { LoadingButton } from "@/components/button/loading-button";
 import {
   Form,
@@ -11,24 +12,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { createTodoFormSchema } from "@/schemas/todos";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 
-const formSchema = z.object({
-  title: z
-    .string()
-    .min(1, "The title cannot be empty")
-    .max(50, "The title cannot be more than 50 characters long"),
-  description: z
-    .string()
-    .max(500, "The description cannot be more than 500 characters long")
-    .optional(),
-});
-
 export function CreateTodoForm({ onCreate }: { onCreate: () => void }) {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createTodoFormSchema>>({
+    resolver: zodResolver(createTodoFormSchema),
     defaultValues: {
       title: "",
     },
@@ -37,8 +29,16 @@ export function CreateTodoForm({ onCreate }: { onCreate: () => void }) {
   const { formState } = form;
   const { isSubmitting } = formState;
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    onCreate();
+  async function onSubmit(values: z.infer<typeof createTodoFormSchema>) {
+    const { errorMessage } = await createTodoAction(values);
+    if (!errorMessage) {
+      onCreate();
+      toast.success("Todo created successfully", {
+        duration: 5000,
+      });
+    } else {
+      toast.error(errorMessage);
+    }
   }
 
   return (
