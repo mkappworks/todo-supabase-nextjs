@@ -2,6 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 
+const publicRoutes = ["/sign-in", "/create-account", "/"];
+
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
     request: {
@@ -9,18 +11,21 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  const path = new URL(request.url).pathname;
-
-  const unprotectedPaths = ["/sign-in", "/create-account"];
+  const pathName = request.nextUrl.pathname;
 
   const user = await getUser(request, response);
-  const isUnprotectedPath = unprotectedPaths.some((up) => path.startsWith(up));
 
-  if (user && isUnprotectedPath) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  } else if (!user && !isUnprotectedPath) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
-  }
+  const isPublicRoute = publicRoutes.includes(pathName);
+
+  if (!user && !isPublicRoute)
+    return NextResponse.redirect(new URL("/sign-in", request.nextUrl));
+
+  if (
+    user &&
+    isPublicRoute &&
+    !request.nextUrl.pathname.startsWith("/dashboard")
+  )
+    return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
 
   return response;
 }
