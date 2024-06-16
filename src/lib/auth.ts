@@ -11,7 +11,7 @@ export const getUser = async () => {
   return user;
 };
 
-export function getSupabaseAuth() {
+export const getSupabaseAuth = () => {
   const cookieStore = cookies();
 
   const superbaseClient = createServerClient(
@@ -37,4 +37,4 @@ export function getSupabaseAuth() {
   );
 
   return superbaseClient.auth;
-}
+};
