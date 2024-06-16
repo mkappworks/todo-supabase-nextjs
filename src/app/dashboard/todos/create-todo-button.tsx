@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/dialog";
 import { btnIconStyles, btnStyles } from "@/styles";
 import { PlusCircleIcon } from "lucide-react";
-import toast from "react-hot-toast";
 
 import { CreateTodoForm } from "./create-todo-form";
 
@@ -37,9 +36,6 @@ export function CreateTodoButton() {
           <CreateTodoForm
             onCreate={() => {
               setIsOpen(false);
-              toast.success("Todo created successfully", {
-                duration: 5000,
-              });
             }}
           />
         </DialogHeader>
