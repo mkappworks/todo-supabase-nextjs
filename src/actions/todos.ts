@@ -7,6 +7,7 @@ import { todos } from "@/db/schemas/todos";
 import {
   createTodoFormSchema,
   deleteTodoSchema,
+  getTodoSchema,
   updateTodoFormSchema,
 } from "@/schemas/todos";
 import { and, desc, eq } from "drizzle-orm";
@@ -48,6 +49,23 @@ export const getTodosAction = async () => {
       .orderBy(desc(todos.updatedAt));
 
     return { data: todoList, errorMessage: null };
+  } catch (error) {
+    return { errorMessage: getErrorMessage(error) };
+  }
+};
+
+export const getTodoAction = async (values: z.infer<typeof getTodoSchema>) => {
+  try {
+    const { error, data } = getTodoSchema.safeParse(values);
+    if (error) return { errorMessage: "The input data entered is not valid" };
+
+    const user = await getUser();
+
+    const todo = await db.query.todos.findFirst({
+      where: eq(todos.userId, user.id) && eq(todos.id, data.id),
+    });
+
+    return { data: todo, errorMessage: null };
   } catch (error) {
     return { errorMessage: getErrorMessage(error) };
   }
