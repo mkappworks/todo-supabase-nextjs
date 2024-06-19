@@ -11,6 +11,10 @@ export const createTodoFormSchema = z.object({
     .optional(),
 });
 
+export const getTodoSchema = z.object({
+  id: z.number().min(1, "The todo id is required"),
+});
+
 export const updateTodoFormSchema = z.object({
   id: z.number().min(1, "The todo id is required"),
   title: z
