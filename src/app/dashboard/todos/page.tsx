@@ -8,10 +8,10 @@ import { CreateTodoButton } from "./create-todo-button";
 import { TodoCard } from "./todo-card";
 
 export default async function TodosPage() {
-  let { data, errorMessage } = await getTodosAction();
+  const { data, errorMessage } = await getTodosAction();
 
   return (
-    <div className="mx-10 my-4">
+    <>
       <div className="mb-10 flex items-center justify-between">
         <h1 className="text-4xl font-bold">Todos</h1>
         <CreateTodoButton />
@@ -72,6 +72,6 @@ export default async function TodosPage() {
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

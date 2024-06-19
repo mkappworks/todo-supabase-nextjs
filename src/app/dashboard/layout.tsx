@@ -18,7 +18,7 @@ export default function DashBoardLayout({
       <SideNav />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <Header />
-        {children}
+        <div className="mx-10 my-4">{children}</div>
       </div>
     </div>
   );
