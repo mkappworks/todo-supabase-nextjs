@@ -22,6 +22,13 @@
       "when": 1718889070984,
       "tag": "0002_slow_malice",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1718889624451,
+      "tag": "0003_loud_moira_mactaggert",
+      "breakpoints": true
     }
   ]
 }
