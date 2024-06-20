@@ -22,9 +22,9 @@ export const getTodosOutputSchema = z.object({
         id: z.string(),
         title: z.string(),
         description: z.string().nullable(),
-        userId: z.string(),
         createdAt: z.date(),
         updatedAt: z.date(),
+        groupId: z.string(),
       }),
     )
     .optional(),
@@ -41,9 +41,9 @@ export const getTodoOutputSchema = z.object({
       id: z.string(),
       title: z.string(),
       description: z.string().nullable(),
-      userId: z.string(),
       createdAt: z.date(),
       updatedAt: z.date(),
+      groupId: z.string(),
     })
     .optional(),
 

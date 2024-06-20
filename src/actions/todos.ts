@@ -27,10 +27,11 @@ export const createTodoAction = authenticatedAction
   .output(createTodoOutputSchema)
   .handler(async ({ ctx, input }) => {
     try {
+      //TODO: Add groupId to the input
       await db.insert(todos).values({
         title: input.title,
         description: input.description,
-        userId: ctx.user.id,
+        groupId: "groupId",
       });
 
       revalidatePath("/dashboard/todos");
@@ -49,7 +50,7 @@ export const getTodosAction = authenticatedAction
       const todoList = await db
         .select()
         .from(todos)
-        .where(eq(todos.userId, ctx.user.id))
+        .where(eq(todos.groupId, ctx.user.id))
         .orderBy(desc(todos.updatedAt));
 
       return { data: todoList, errorMessage: null };
@@ -65,7 +66,7 @@ export const getTodoAction = authenticatedAction
   .handler(async ({ ctx, input }) => {
     try {
       const todo = await db.query.todos.findFirst({
-        where: eq(todos.userId, ctx.user.id) && eq(todos.id, input.id),
+        where: eq(todos.groupId, ctx.user.id) && eq(todos.id, input.id),
       });
 
       return { data: todo, errorMessage: null };
@@ -87,7 +88,7 @@ export const updateTodoAction = authenticatedAction
           description: input.description,
           updatedAt: new Date(),
         })
-        .where(and(eq(todos.id, input.id), eq(todos.userId, ctx.user.id)));
+        .where(and(eq(todos.id, input.id), eq(todos.groupId, "groupId")));
 
       revalidatePath("/dashboard/todos");
 
@@ -105,7 +106,7 @@ export const deleteTodoAction = authenticatedAction
     try {
       await db
         .delete(todos)
-        .where(and(eq(todos.id, input.id), eq(todos.userId, ctx.user.id)));
+        .where(and(eq(todos.id, input.id), eq(todos.groupId, "groupId")));
 
       revalidatePath("/dashboard/todos");
 
