@@ -5,7 +5,6 @@ import { groups } from "./groups";
 
 export const todos = pgTable("todos", {
   id: uuid("id").defaultRandom().primaryKey(),
-  userId: text("user_id").notNull(),
   groupId: uuid("group_id")
     .references(() => groups.id, { onDelete: "cascade" })
     .notNull(),
