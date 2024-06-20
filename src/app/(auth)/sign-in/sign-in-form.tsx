@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { createAccountAction, signInAction } from "@/actions/users";
+import { signInAction } from "@/actions/users";
 import { LoadingButton } from "@/components/button/loading-button";
 import {
   Form,
@@ -14,18 +14,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createAccountFormSchema } from "@/schemas/users";
+import { signInFormSchema } from "@/schemas/users";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-export function CreateAccountForm() {
+export function SignInForm() {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof createAccountFormSchema>>({
-    resolver: zodResolver(createAccountFormSchema),
+  const form = useForm<z.infer<typeof signInFormSchema>>({
+    resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: "",
       password: "",
@@ -35,13 +35,11 @@ export function CreateAccountForm() {
   const { formState } = form;
   const { isSubmitting } = formState;
 
-  async function onSubmit(values: z.infer<typeof createAccountFormSchema>) {
-    const { errorMessage } = await createAccountAction(values);
+  async function onSubmit(values: z.infer<typeof signInFormSchema>) {
+    const { errorMessage } = await signInAction(values);
     if (!errorMessage) {
       router.replace("/dashboard");
-      toast.success("Account created successfully\nYou are now signed in", {
-        duration: 5000,
-      });
+      toast.success("Successfully signed in");
     } else {
       toast.error(errorMessage);
     }
@@ -52,16 +50,15 @@ export function CreateAccountForm() {
       <h1
         className={`mb-8 text-2xl font-semibold ${isSubmitting && "opacity-0"}`}
       >
-        Create Account
+        Sign In
       </h1>
 
       {isSubmitting && (
         <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-y-2 text-primary">
-          <p>Creating account...</p>
+          <p>Signing in...</p>
           <Loader2 className="size-6 animate-spin" />
         </div>
       )}
-
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -103,20 +100,17 @@ export function CreateAccountForm() {
               </FormItem>
             )}
           />
-          <LoadingButton
-            isLoading={isSubmitting}
-            loadingText="Creating Account..."
-          >
-            Create Account
+          <LoadingButton isLoading={isSubmitting} loadingText="Signin In...">
+            Sign In
           </LoadingButton>
 
           <p className="mt-3 text-center text-xs">
-            Already have an account?
+            Don't have an account?
             <Link
-              href="/sign-in"
+              href="/create-account"
               className="ml-2 underline transition-colors duration-200 ease-in-out hover:text-primary"
             >
-              Sign In
+              Create Account
             </Link>
           </p>
         </form>
