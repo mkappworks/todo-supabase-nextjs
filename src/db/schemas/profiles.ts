@@ -4,8 +4,7 @@ import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { profilesToOrganisations } from "./profilesToOrganisations";
 
 export const profiles = pgTable("profiles", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  userId: text("user_id").notNull(),
+  id: uuid("id").primaryKey(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
