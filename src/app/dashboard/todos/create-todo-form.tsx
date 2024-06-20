@@ -12,15 +12,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { createTodoFormSchema } from "@/schemas/todos";
+import { createTodoInputSchema } from "@/schemas/todos";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
 export function CreateTodoForm({ onCreate }: { onCreate: () => void }) {
-  const form = useForm<z.infer<typeof createTodoFormSchema>>({
-    resolver: zodResolver(createTodoFormSchema),
+  const form = useForm<z.infer<typeof createTodoInputSchema>>({
+    resolver: zodResolver(createTodoInputSchema),
     defaultValues: {
       title: "",
     },
@@ -29,15 +29,18 @@ export function CreateTodoForm({ onCreate }: { onCreate: () => void }) {
   const { formState } = form;
   const { isSubmitting } = formState;
 
-  async function onSubmit(values: z.infer<typeof createTodoFormSchema>) {
-    const { errorMessage } = await createTodoAction(values);
-    if (!errorMessage) {
+  async function onSubmit(values: z.infer<typeof createTodoInputSchema>) {
+    const [data, err] = await createTodoAction(values);
+
+    if (err) {
+      toast.error("Error creating todo");
+    } else if (data?.errorMessage) {
+      toast.error(data?.errorMessage);
+    } else {
       onCreate();
       toast.success("Todo created successfully", {
         duration: 5000,
       });
-    } else {
-      toast.error(errorMessage);
     }
   }
 

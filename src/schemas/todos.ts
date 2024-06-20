@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createTodoFormSchema = z.object({
+export const createTodoInputSchema = z.object({
   title: z
     .string()
     .min(1, "The title cannot be empty")
@@ -11,11 +11,46 @@ export const createTodoFormSchema = z.object({
     .optional(),
 });
 
-export const getTodoSchema = z.object({
+export const createTodoOutputSchema = z.object({
+  errorMessage: z.string().nullable(),
+});
+
+export const getTodosOutputSchema = z.object({
+  data: z
+    .array(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string().nullable(),
+        userId: z.string(),
+        createdAt: z.date(),
+        updatedAt: z.date(),
+      }),
+    )
+    .optional(),
+  errorMessage: z.string().nullable(),
+});
+
+export const getTodoInputSchema = z.object({
   id: z.string().uuid("The todo id is required"),
 });
 
-export const updateTodoFormSchema = z.object({
+export const getTodoOutputSchema = z.object({
+  data: z
+    .object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string().nullable(),
+      userId: z.string(),
+      createdAt: z.date(),
+      updatedAt: z.date(),
+    })
+    .optional(),
+
+  errorMessage: z.string().nullable(),
+});
+
+export const updateTodoInputSchema = z.object({
   id: z.string().uuid("The todo id is required"),
   title: z
     .string()
@@ -27,6 +62,14 @@ export const updateTodoFormSchema = z.object({
     .optional(),
 });
 
-export const deleteTodoSchema = z.object({
+export const updateTodoOutputSchema = z.object({
+  errorMessage: z.string().nullable(),
+});
+
+export const deleteTodoInputSchema = z.object({
   id: z.string().uuid("The todo id is required"),
+});
+
+export const deleteTodoOutputSchema = z.object({
+  errorMessage: z.string().nullable(),
 });

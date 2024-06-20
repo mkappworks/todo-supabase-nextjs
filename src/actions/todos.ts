@@ -5,115 +5,112 @@ import { revalidatePath } from "next/cache";
 import db from "@/db";
 import { todos } from "@/db/schemas/todos";
 import {
-  createTodoFormSchema,
-  deleteTodoSchema,
-  getTodoSchema,
-  updateTodoFormSchema,
+  createTodoInputSchema,
+  createTodoOutputSchema,
+  deleteTodoInputSchema,
+  deleteTodoOutputSchema,
+  getTodoInputSchema,
+  getTodoOutputSchema,
+  getTodosOutputSchema,
+  updateTodoInputSchema,
+  updateTodoOutputSchema,
 } from "@/schemas/todos";
 import { and, desc, eq } from "drizzle-orm";
-import { z } from "zod";
 
-import { getUser } from "@/lib/auth";
 import { getErrorMessage } from "@/lib/utils";
 
-export const createTodoAction = async (
-  values: z.infer<typeof createTodoFormSchema>,
-) => {
-  try {
-    const { error, data } = createTodoFormSchema.safeParse(values);
-    if (error) return { errorMessage: "The input data entered is not valid" };
+import { authenticatedAction } from "./lib/safe-action";
 
-    const user = await getUser();
-    await db.insert(todos).values({
-      title: data.title,
-      description: data.description,
-      userId: user.id,
-    });
+export const createTodoAction = authenticatedAction
+  .createServerAction()
+  .input(createTodoInputSchema)
+  .output(createTodoOutputSchema)
+  .handler(async ({ ctx, input }) => {
+    try {
+      await db.insert(todos).values({
+        title: input.title,
+        description: input.description,
+        userId: ctx.user.id,
+      });
 
-    revalidatePath("/dashboard/todos");
+      revalidatePath("/dashboard/todos");
 
-    return { errorMessage: null };
-  } catch (error) {
-    return { errorMessage: getErrorMessage(error) };
-  }
-};
+      return { errorMessage: null };
+    } catch (error) {
+      return { errorMessage: getErrorMessage(error) };
+    }
+  });
 
-export const getTodosAction = async () => {
-  try {
-    const user = await getUser();
+export const getTodosAction = authenticatedAction
+  .createServerAction()
+  .output(getTodosOutputSchema)
+  .handler(async ({ ctx }) => {
+    try {
+      const todoList = await db
+        .select()
+        .from(todos)
+        .where(eq(todos.userId, ctx.user.id))
+        .orderBy(desc(todos.updatedAt));
 
-    const todoList = await db
-      .select()
-      .from(todos)
-      .where(eq(todos.userId, user.id))
-      .orderBy(desc(todos.updatedAt));
+      return { data: todoList, errorMessage: null };
+    } catch (error) {
+      return { errorMessage: getErrorMessage(error) };
+    }
+  });
 
-    return { data: todoList, errorMessage: null };
-  } catch (error) {
-    return { errorMessage: getErrorMessage(error) };
-  }
-};
+export const getTodoAction = authenticatedAction
+  .createServerAction()
+  .input(getTodoInputSchema)
+  .output(getTodoOutputSchema)
+  .handler(async ({ ctx, input }) => {
+    try {
+      const todo = await db.query.todos.findFirst({
+        where: eq(todos.userId, ctx.user.id) && eq(todos.id, input.id),
+      });
 
-export const getTodoAction = async (values: z.infer<typeof getTodoSchema>) => {
-  try {
-    const { error, data } = getTodoSchema.safeParse(values);
-    if (error) return { errorMessage: "The input data entered is not valid" };
+      return { data: todo, errorMessage: null };
+    } catch (error) {
+      return { errorMessage: getErrorMessage(error) };
+    }
+  });
 
-    const user = await getUser();
+export const updateTodoAction = authenticatedAction
+  .createServerAction()
+  .input(updateTodoInputSchema)
+  .output(updateTodoOutputSchema)
+  .handler(async ({ ctx, input }) => {
+    try {
+      await db
+        .update(todos)
+        .set({
+          title: input.title,
+          description: input.description,
+          updatedAt: new Date(),
+        })
+        .where(and(eq(todos.id, input.id), eq(todos.userId, ctx.user.id)));
 
-    const todo = await db.query.todos.findFirst({
-      where: eq(todos.userId, user.id) && eq(todos.id, data.id),
-    });
+      revalidatePath("/dashboard/todos");
 
-    return { data: todo, errorMessage: null };
-  } catch (error) {
-    return { errorMessage: getErrorMessage(error) };
-  }
-};
+      return { errorMessage: null };
+    } catch (error) {
+      return { errorMessage: getErrorMessage(error) };
+    }
+  });
 
-export const updateTodoAction = async (
-  values: z.infer<typeof updateTodoFormSchema>,
-) => {
-  try {
-    const { error, data } = updateTodoFormSchema.safeParse(values);
-    if (error) return { errorMessage: "The input data entered is not valid" };
+export const deleteTodoAction = authenticatedAction
+  .createServerAction()
+  .input(deleteTodoInputSchema)
+  .output(deleteTodoOutputSchema)
+  .handler(async ({ ctx, input }) => {
+    try {
+      await db
+        .delete(todos)
+        .where(and(eq(todos.id, input.id), eq(todos.userId, ctx.user.id)));
 
-    const user = await getUser();
+      revalidatePath("/dashboard/todos");
 
-    await db
-      .update(todos)
-      .set({
-        title: data.title,
-        description: data.description,
-        updatedAt: new Date(),
-      })
-      .where(and(eq(todos.id, data.id), eq(todos.userId, user.id)));
-
-    revalidatePath("/dashboard/todos");
-
-    return { errorMessage: null };
-  } catch (error) {
-    return { errorMessage: getErrorMessage(error) };
-  }
-};
-
-export const deleteTodoAction = async (
-  values: z.infer<typeof deleteTodoSchema>,
-) => {
-  try {
-    const { error, data } = deleteTodoSchema.safeParse(values);
-    if (error) return { errorMessage: "The input data entered is not valid" };
-
-    const user = await getUser();
-
-    await db
-      .delete(todos)
-      .where(and(eq(todos.id, data.id), eq(todos.userId, user.id)));
-
-    revalidatePath("/dashboard/todos");
-
-    return { errorMessage: null };
-  } catch (error) {
-    return { errorMessage: getErrorMessage(error) };
-  }
-};
+      return { errorMessage: null };
+    } catch (error) {
+      return { errorMessage: getErrorMessage(error) };
+    }
+  });

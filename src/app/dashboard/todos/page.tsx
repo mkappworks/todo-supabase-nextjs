@@ -1,3 +1,4 @@
+import { Key } from "react";
 import Image from "next/image";
 
 import { getTodosAction } from "@/actions/todos";
@@ -8,7 +9,7 @@ import { CreateTodoButton } from "./create-todo-button";
 import { TodoCard } from "./todo-card";
 
 export default async function TodosPage() {
-  const { data, errorMessage } = await getTodosAction();
+  const [data, err] = await getTodosAction();
 
   return (
     <>
@@ -17,7 +18,7 @@ export default async function TodosPage() {
         <CreateTodoButton />
       </div>
 
-      {errorMessage && (
+      {err && (
         <div className="flex flex-col items-center justify-center gap-8 py-12">
           <Image
             src="/todo.svg"
@@ -47,7 +48,21 @@ export default async function TodosPage() {
         </div>
       )}
 
-      {data && data.length === 0 && (
+      {data?.errorMessage && (
+        <div className="flex flex-col items-center justify-center gap-8 py-12">
+          <Image
+            src="/todo.svg"
+            width="200"
+            height="200"
+            alt="image of empty todo list"
+          />
+          <h2 className="text-2xl">
+            Error loading the todo. {data.errorMessage}
+          </h2>
+        </div>
+      )}
+
+      {data?.data && data?.data.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-8 py-12">
           <Image
             src="/todo.svg"
@@ -60,12 +75,12 @@ export default async function TodosPage() {
         </div>
       )}
 
-      {data && data.length > 0 && (
+      {data?.data && data?.data.length > 0 && (
         <div className="grid grid-cols-3 gap-8">
-          {data?.map((todo) => (
+          {data?.data.map((todo) => (
             <TodoCard
               key={todo.id}
-              id={todo.id.toString()}
+              id={todo.id}
               title={todo.title}
               description={todo.description}
             />
