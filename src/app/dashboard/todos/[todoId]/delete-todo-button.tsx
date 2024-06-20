@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { btnIconStyles, btnStyles } from "@/styles";
 import { Trash } from "lucide-react";
 
-export function DeleteDocButton({ todoId }: { todoId: number }) {
+export function DeleteDocButton({ todoId }: { todoId: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 

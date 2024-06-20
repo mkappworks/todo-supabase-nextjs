@@ -11,8 +11,7 @@ export default async function TodoPage({
     todoId: string;
   };
 }) {
-  const todoId = Number(params.todoId);
-  const { data, errorMessage } = await getTodoAction({ id: todoId });
+  const { data, errorMessage } = await getTodoAction({ id: params.todoId });
 
   return (
     <main className="w-full space-y-8">

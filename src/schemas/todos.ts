@@ -12,11 +12,11 @@ export const createTodoFormSchema = z.object({
 });
 
 export const getTodoSchema = z.object({
-  id: z.number().min(1, "The todo id is required"),
+  id: z.string().uuid("The todo id is required"),
 });
 
 export const updateTodoFormSchema = z.object({
-  id: z.number().min(1, "The todo id is required"),
+  id: z.string().uuid("The todo id is required"),
   title: z
     .string()
     .min(1, "The title cannot be empty")
@@ -28,5 +28,5 @@ export const updateTodoFormSchema = z.object({
 });
 
 export const deleteTodoSchema = z.object({
-  id: z.number().min(1, "The todo id is required"),
+  id: z.string().uuid("The todo id is required"),
 });
